@@ -19,7 +19,7 @@ import locationRoutes from './routes/locationRoutes.js';
 config({path:"./configuration/config.env"});
 export const app=express();
 
-app.use(cors({origin:true}));
+app.use(cors({origin:true,credentials:true}));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -40,3 +40,4 @@ app.get("/getKey",(req,res)=>{
     })
 })
 app.use(errorMiddleware);
+app.options('*', cors());
