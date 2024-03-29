@@ -22,13 +22,21 @@ export const saveAdditionalInfo = catchAsyncErrors(async (req, res, next) => {
     }
   
     
-    additionalInfo.subsections = [...additionalInfo.subsections, ...req.body.subsections];
-    await additionalInfo.save();
-  
-    res.status(200).json({
+    for (const subsection of subsections) {
+      const existingSubsection = additionalInfo.subsections.find(
+          (existing) => existing.heading === subsection.heading
+      );
+      if (!existingSubsection) {
+          additionalInfo.subsections.push(subsection);
+      }
+  }
+
+  await additionalInfo.save();
+
+  res.status(200).json({
       success: true,
       allAdditionalDetails: [additionalInfo],
-    });
+  })
   });
   
 
