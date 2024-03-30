@@ -34,7 +34,7 @@ export const checkout=catchAsyncErrors(async(req,res)=>{
         user:req.user,
         
     })
-    res.redirect(`${BASE_URL}/PaymentSuccess?reference=${razorpay_payment_id}`)
+    res.redirect(`${process.env.BASE_URL}/PaymentSuccess?reference=${razorpay_payment_id}`)
   }
   else{
     res.status(400).json({
