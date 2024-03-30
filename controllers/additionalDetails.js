@@ -2,44 +2,33 @@ import ErrorHandler from "../Utility/ErrorHandler.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import { AdditionalData } from "../models/additionalDetails.js";
 
-
 export const saveAdditionalInfo = catchAsyncErrors(async (req, res, next) => {
-    const {title}=req.body;
-    let additionalInfo = await AdditionalData.findOne({ title });
-  
-    if (!additionalInfo) {
-      
-      additionalInfo = await AdditionalData.create({
-        title: req.body.title,
-        subsections: req.body.subsections,
-      });
-  
-      return res.status(201).json({
-        success: true,
-        message:'Additional details is saved successfully...',
-        allAdditionalDetails: [additionalInfo],
-      });
-    }
-  
+  const {title}=req.body;
+  let additionalInfo = await AdditionalData.findOne({ title});
+
+  if (!additionalInfo) {
     
-    for (const subsection of subsections) {
-      const existingSubsection = additionalInfo.subsections.find(
-          (existing) => existing.heading === subsection.heading
-      );
-      if (!existingSubsection) {
-          additionalInfo.subsections.push(subsection);
-      }
+    additionalInfo = await AdditionalData.create({
+      title: req.body.title,
+      subsections: req.body.subsections,
+    });
+
+    return res.status(201).json({
+      success: true,
+      message:'Additional details is saved',
+      allAdditionalDetails: [additionalInfo],
+    });
   }
 
+  
+  additionalInfo.subsections = [...req.body.subsections];
   await additionalInfo.save();
 
   res.status(200).json({
-      success: true,
-      allAdditionalDetails: [additionalInfo],
-  })
+    success: true,
+    allAdditionalDetails: [additionalInfo],
   });
-  
-
+})
   
 export const showAllAdditionalInfo=catchAsyncErrors(async(req,res,next)=>{
     const allAdditionalInfo=await AdditionalData.find();

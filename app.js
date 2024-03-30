@@ -19,7 +19,11 @@ import locationRoutes from './routes/locationRoutes.js';
 config({path:"./configuration/config.env"});
 export const app=express();
 
-app.use(cors({origin:true,credentials:true}));
+app.use(cors({
+    origin:process.env.FRONTEND_URI || "http://localhost:3000",
+    methods:["POST","GET","PUT","DELETE"],
+    credentials:true
+}));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
