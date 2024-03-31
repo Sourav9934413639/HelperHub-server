@@ -2,7 +2,7 @@ import {instance} from '../server.js'
 import { payDetails } from '../models/razor.js';
 import crypto from 'crypto';
 import catchAsyncErrors from '../middleware/catchAsyncErrors.js';
-import axios from 'axios';
+
 
 export const checkout=catchAsyncErrors(async(req,res)=>{
     try{
@@ -36,9 +36,7 @@ export const checkout=catchAsyncErrors(async(req,res)=>{
         user:req.user,
         
     })
-    // res.redirect(`${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`)
-    const referenceUrl = `${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`;
-    await axios.get(referenceUrl);
+    res.redirect(`${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`);
   }
   else{
     res.status(400).json({
